@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  db:
+  postgres:
     image: postgres:latest
     restart: always
     environment:
@@ -11,7 +11,31 @@ services:
       - "127.0.0.1:5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-h",
+          "postgres",
+          "-p",
+          "5432",
+          "-U",
+          "${POSTGRES_USER}"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  flyway:
+    image: redgate/flyway:latest
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: -url=jdbc:postgresql://postgres:5432/${POSTGRES_DB} -schemas=public -user=${POSTGRES_USER} -password=${POSTGRES_PASSWORD} migrate
+    volumes:
+      - ./migration:/flyway/sql
 
 volumes:
   db_data:
+
 
