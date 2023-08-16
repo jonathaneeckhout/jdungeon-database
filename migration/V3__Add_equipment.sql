@@ -3,7 +3,7 @@ ALTER TABLE
 ALTER COLUMN
     inventory
 SET
-    DEFAULT '{"inventory": []}';
+    DEFAULT '{"items": []}';
 
 ALTER TABLE
     characters
