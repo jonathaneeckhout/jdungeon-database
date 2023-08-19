@@ -20,6 +20,7 @@ CREATE TABLE characters (
     level VARCHAR(255) NOT NULL,
     pos_x REAL,
     pos_y REAL,
-    exp INTEGER DEFAULT 0,
-    exp_level INTEGER DEFAULT 1
+    stats json DEFAULT '{"hp":10, "level":1, "exp":0}',
+    inventory json DEFAULT '{"gold":0, "items": []}',
+    equipment json DEFAULT '{"equipment":{}}'
 );
